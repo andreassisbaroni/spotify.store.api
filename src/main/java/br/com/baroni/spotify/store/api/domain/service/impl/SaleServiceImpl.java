@@ -97,6 +97,8 @@ public class SaleServiceImpl implements SaleService {
         SaleQuery saleQuery = new SaleQuery(sale.getId(), sale.getSaleDate(), sale.getStatus());
         saleQuery.setTotalPrice(sale.getTotalPrice());
         saleQuery.setTotalCashback(sale.getTotalCashback());
+        saleQuery.setFinishDate(sale.getFinishDate());
+        saleQuery.setCancelDate(sale.getCancelDate());
         return saleQuery;
     }
 

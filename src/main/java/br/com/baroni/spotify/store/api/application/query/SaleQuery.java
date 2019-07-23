@@ -23,6 +23,9 @@ public class SaleQuery {
     @JsonProperty("finishDate")
     private LocalDateTime finishDate;
 
+    @JsonProperty("cancelDate")
+    private LocalDateTime cancelDate;
+
     @JsonProperty("status")
     private SaleStatus saleStatus;
 
@@ -71,6 +74,14 @@ public class SaleQuery {
 
     public void setFinishDate(LocalDateTime finishDate) {
         this.finishDate = finishDate;
+    }
+
+    public LocalDateTime getCancelDate() {
+        return cancelDate;
+    }
+
+    public void setCancelDate(LocalDateTime cancelDate) {
+        this.cancelDate = cancelDate;
     }
 
     public SaleStatus getSaleStatus() {
