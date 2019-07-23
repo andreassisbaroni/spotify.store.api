@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="createTableGenre" author="andre.baroni">
+        <createTable tableName="genre">
+            <column name="id" type="uuid">
+                <constraints nullable="false"
+                             primaryKey="true" 
+                             primaryKeyName="pk_genre" />
+            </column>
+            <column name="description" type="varchar(200)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="createTableCashBackDiscount" author="andre.baroni">
+        <createTable tableName="cashback_discount">
+            <column name="id" type="uuid">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             primaryKeyName="pk_cashbackdiscount" />
+            </column>
+            <column name="fk_genre" type="uuid">
+                <constraints nullable="true"
+                             foreignKeyName="fk_cashbackdiscount_genre"
+                             referencedTableName="genre"
+                             referencedColumnNames="id" />
+            </column>
+            <column name="percentage" type="double">
+                <constraints nullable="false" />
+            </column>
+            <column name="day_of_week" type="int" />
+            <column name="active" type="boolean" defaultValue="true">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="createTableAlbum" author="andre.baroni">
+        <createTable tableName="album">
+            <column name="id" type="uuid">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             primaryKeyName="pk_album" />
+            </column>
+            <column name="artist" type="varchar(200)">
+                <constraints nullable="false" />
+            </column>
+            <column name="name" type="varchar(200)">
+                <constraints nullable="false" />
+            </column>
+            <column name="fk_genre" type="uuid">
+                <constraints nullable="false"
+                             foreignKeyName="fk_album_genre"
+                             referencedTableName="genre"
+                             referencedColumnNames="id" />
+            </column>
+            <column name="price" type="number(15,2)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="insertBaseGenres" author="andre.baroni">
+        <insert tableName="genre">
+            <column name="id" value="a5474d81-b438-401c-8cba-db6a5c43bdfd" />
+            <column name="description" value="POP" />
+        </insert>
+        <insert tableName="genre">
+            <column name="id" value="ee738d09-a385-4623-b0c6-4dd815370ce5" />
+            <column name="description" value="MPB" />
+        </insert>
+        <insert tableName="genre">
+            <column name="id" value="bcc29bf3-921f-4832-be15-1a8301586fb4" />
+            <column name="description" value="CLASSIC" />
+        </insert>
+        <insert tableName="genre">
+            <column name="id" value="6edac42c-443b-4c42-b16f-2f53381919b5" />
+            <column name="description" value="ROCK" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="createTableSale" author="andre.baroni">
+        <createTable tableName="sale">
+            <column name="id" type="uuid">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             primaryKeyName="pk_sale" />
+            </column>
+            <column name="sale_date" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+            <column name="finish_date" type="timestamp" />
+            <column name="cancel_date" type="timestamp" />
+            <column name="total_price" type="number(15,2)" />
+            <column name="total_cashback" type="number(15,2)" />
+        </createTable>
+    </changeSet>
+
+    <changeSet id="createTableSaleItem" author="andre.baroni">
+        <createTable tableName="sale_item">
+            <column name="id" type="uuid">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             primaryKeyName="pk_saleitem" />
+            </column>
+            <column name="fk_sale" type="uuid">
+                <constraints nullable="false"
+                             foreignKeyName="fk_saleitem_sale"
+                             referencedTableName="sale"
+                             referencedColumnNames="id" />
+            </column>
+            <column name="fk_album" type="uuid">
+                <constraints nullable="false"
+                             foreignKeyName="fk_saleitem_album"
+                             referencedTableName="album"
+                             referencedColumnNames="id" />
+            </column>
+            <column name="price" type="number(15,2)">
+                <constraints nullable="false" />
+            </column>
+            <column name="cashback" type="number(15,2)" />
+            <column name="fk_cashback_discount" type="uuid">
+                <constraints nullable="true"
+                             foreignKeyName="fk_saleitem_cashbackdiscount"
+                             referencedTableName="cashback_discount"
+                             referencedColumnNames="id" />
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="insertInitialPOPCashbackDiscount" author="andre.baroni">
+        <insert tableName="cashback_discount">
+            <column name="id" value="8dd1f634-ffcb-4975-9f67-31a5f379d023" />
+            <column name="fk_genre" value="a5474d81-b438-401c-8cba-db6a5c43bdfd" />
+            <column name="percentage" value="7" />
+            <column name="day_of_week" value="1" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="98a9003a-d69b-4ec0-9b28-089ae4344c83" />
+            <column name="fk_genre" value="a5474d81-b438-401c-8cba-db6a5c43bdfd" />
+            <column name="percentage" value="6" />
+            <column name="day_of_week" value="2" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="cec0d0cf-9b16-4fdf-974d-0def8090e532" />
+            <column name="fk_genre" value="a5474d81-b438-401c-8cba-db6a5c43bdfd" />
+            <column name="percentage" value="2" />
+            <column name="day_of_week" value="3" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="0aad360b-97ea-4c33-80b9-0d2cb2be77fc" />
+            <column name="fk_genre" value="a5474d81-b438-401c-8cba-db6a5c43bdfd" />
+            <column name="percentage" value="10" />
+            <column name="day_of_week" value="4" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="973828b9-3f5d-4d13-9c8f-5be59551da8b" />
+            <column name="fk_genre" value="a5474d81-b438-401c-8cba-db6a5c43bdfd" />
+            <column name="percentage" value="15" />
+            <column name="day_of_week" value="5" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="af0f6a87-f309-4d5c-917a-eb5f41213f1a" />
+            <column name="fk_genre" value="a5474d81-b438-401c-8cba-db6a5c43bdfd" />
+            <column name="percentage" value="20" />
+            <column name="day_of_week" value="6" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="6498e4d8-f02d-42de-9f85-1b39188e52c7" />
+            <column name="fk_genre" value="a5474d81-b438-401c-8cba-db6a5c43bdfd" />
+            <column name="percentage" value="25" />
+            <column name="day_of_week" value="7" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="insertInitialMPBCashbackDiscount" author="andre.baroni">
+        <insert tableName="cashback_discount">
+            <column name="id" value="abc5bab6-84d7-4f4f-862b-a4ea0dfdd9e6" />
+            <column name="fk_genre" value="ee738d09-a385-4623-b0c6-4dd815370ce5" />
+            <column name="percentage" value="5" />
+            <column name="day_of_week" value="1" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="c579010a-324e-4a68-a0bb-4c1051b442c5" />
+            <column name="fk_genre" value="ee738d09-a385-4623-b0c6-4dd815370ce5" />
+            <column name="percentage" value="10" />
+            <column name="day_of_week" value="2" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="ee6536fa-adf1-423b-886c-71d1530df990" />
+            <column name="fk_genre" value="ee738d09-a385-4623-b0c6-4dd815370ce5" />
+            <column name="percentage" value="15" />
+            <column name="day_of_week" value="3" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="42cf9739-7239-4909-9995-3ddc56493d3c" />
+            <column name="fk_genre" value="ee738d09-a385-4623-b0c6-4dd815370ce5" />
+            <column name="percentage" value="20" />
+            <column name="day_of_week" value="4" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="17bbe1d4-de8b-4e20-bced-9db37bc1c2c6" />
+            <column name="fk_genre" value="ee738d09-a385-4623-b0c6-4dd815370ce5" />
+            <column name="percentage" value="25" />
+            <column name="day_of_week" value="5" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="10c52d7e-ac4d-437d-9519-008fb25a3580" />
+            <column name="fk_genre" value="ee738d09-a385-4623-b0c6-4dd815370ce5" />
+            <column name="percentage" value="30" />
+            <column name="day_of_week" value="6" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="413672f0-6eac-4c98-b253-25f20792d23b" />
+            <column name="fk_genre" value="ee738d09-a385-4623-b0c6-4dd815370ce5" />
+            <column name="percentage" value="30" />
+            <column name="day_of_week" value="7" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="insertInitialClassicCashbackDiscount" author="andre.baroni">
+        <insert tableName="cashback_discount">
+            <column name="id" value="af807664-6113-4398-93c6-2a552065f06f" />
+            <column name="fk_genre" value="bcc29bf3-921f-4832-be15-1a8301586fb4" />
+            <column name="percentage" value="3" />
+            <column name="day_of_week" value="1" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="fa4da8eb-65b4-41bc-9b4d-86b4f6279a43" />
+            <column name="fk_genre" value="bcc29bf3-921f-4832-be15-1a8301586fb4" />
+            <column name="percentage" value="5" />
+            <column name="day_of_week" value="2" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="74cc9b7b-4e3c-4921-a873-bbbf52abdc55" />
+            <column name="fk_genre" value="bcc29bf3-921f-4832-be15-1a8301586fb4" />
+            <column name="percentage" value="8" />
+            <column name="day_of_week" value="3" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="b5532f24-9314-41d3-a56a-a6b9cdf2620f" />
+            <column name="fk_genre" value="bcc29bf3-921f-4832-be15-1a8301586fb4" />
+            <column name="percentage" value="13" />
+            <column name="day_of_week" value="4" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="5c54e480-95f6-4fe1-9cc6-9bebbc2f5250" />
+            <column name="fk_genre" value="bcc29bf3-921f-4832-be15-1a8301586fb4" />
+            <column name="percentage" value="18" />
+            <column name="day_of_week" value="5" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="04e7c164-01e0-4185-8c63-05b808a1d00c" />
+            <column name="fk_genre" value="bcc29bf3-921f-4832-be15-1a8301586fb4" />
+            <column name="percentage" value="25" />
+            <column name="day_of_week" value="6" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="cb7d90d8-c988-4f7e-aab6-1c75c372e75a" />
+            <column name="fk_genre" value="bcc29bf3-921f-4832-be15-1a8301586fb4" />
+            <column name="percentage" value="35" />
+            <column name="day_of_week" value="7" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="insertInitialRockCashbackDiscount" author="andre.baroni">
+        <insert tableName="cashback_discount">
+            <column name="id" value="93da88fc-eb8f-4e5e-aa8e-a1b95ef805ca" />
+            <column name="fk_genre" value="6edac42c-443b-4c42-b16f-2f53381919b5" />
+            <column name="percentage" value="10" />
+            <column name="day_of_week" value="1" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="910c19a7-828c-4e58-8847-6efea3ab29c4" />
+            <column name="fk_genre" value="6edac42c-443b-4c42-b16f-2f53381919b5" />
+            <column name="percentage" value="15" />
+            <column name="day_of_week" value="2" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="5b033389-3d65-4a11-9908-b0762922328f" />
+            <column name="fk_genre" value="6edac42c-443b-4c42-b16f-2f53381919b5" />
+            <column name="percentage" value="15" />
+            <column name="day_of_week" value="3" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="5db289b9-c148-4a8a-9cdb-582578ac6d25" />
+            <column name="fk_genre" value="6edac42c-443b-4c42-b16f-2f53381919b5" />
+            <column name="percentage" value="15" />
+            <column name="day_of_week" value="4" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="8067103f-5d8a-45bc-917f-74f4b2f84620" />
+            <column name="fk_genre" value="6edac42c-443b-4c42-b16f-2f53381919b5" />
+            <column name="percentage" value="20" />
+            <column name="day_of_week" value="5" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="612fb56c-5372-4a33-b5a0-8b420db104f2" />
+            <column name="fk_genre" value="6edac42c-443b-4c42-b16f-2f53381919b5" />
+            <column name="percentage" value="40" />
+            <column name="day_of_week" value="6" />
+        </insert>
+        <insert tableName="cashback_discount">
+            <column name="id" value="83026bf9-6aa2-4aee-9c27-bc2c84e8469f" />
+            <column name="fk_genre" value="6edac42c-443b-4c42-b16f-2f53381919b5" />
+            <column name="percentage" value="40" />
+            <column name="day_of_week" value="7" />
+        </insert>
+    </changeSet>
+
+    <changeSet id="createTableSpotifyIntegrationLock" author="andre.baroni">
+        <createTable tableName="spotify_integration_lock">
+            <column name="id" type="uuid">
+                <constraints nullable="false"
+                             primaryKey="true"
+                             primaryKeyName="pk_spotify_integration_lock" />
+            </column>
+            <column name="execution_date" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+            <column name="success" type="boolean" defaultValue="false" />
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>
