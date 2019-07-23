@@ -7,12 +7,14 @@ import br.com.baroni.spotify.store.api.infra.repository.SpotifyIntegrationLockRe
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
 
+@Profile("prod")
 @Component
 public class ApplicationStartup implements ApplicationListener<ApplicationReadyEvent> {
 

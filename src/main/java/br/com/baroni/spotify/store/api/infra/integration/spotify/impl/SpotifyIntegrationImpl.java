@@ -10,6 +10,7 @@ import br.com.baroni.spotify.store.api.infra.repository.AlbumRepository;
 import br.com.baroni.spotify.store.api.infra.repository.GenreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -21,6 +22,7 @@ import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Objects;
 
+@Profile("prod")
 @Service
 public class SpotifyIntegrationImpl implements SpotifyIntegration {
 
