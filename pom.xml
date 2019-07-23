@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>br.com.baroni</groupId>
 	<artifactId>spotify.store.api</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>spotify.store.api</name>
 	<description>Spotify Store</description>
 
@@ -57,6 +57,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>spotifyStore</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
